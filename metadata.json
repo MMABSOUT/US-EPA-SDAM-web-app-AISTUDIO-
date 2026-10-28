@@ -1,0 +1,8 @@
+{
+  "name": "SDAM Web App",
+  "description": "Regional Streamflow Duration Assessment Methods (SDAMs) web application developed for the US EPA to predict streamflow duration classification (perennial, intermittent, or ephemeral) from field indicators across 6 regions.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

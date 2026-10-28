@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1b1b1b;
+    background-color: #f7f9fa;
+  }
+}
+
+/* Custom EPA USWDS Styles matching SDAM R Shiny app */
+.question-box {
+  background-color: #f0f0f0;
+  width: 100%;
+  border: 2px solid #565c65;
+  padding: 14px;
+  margin-bottom: 16px;
+  border-radius: 2px;
+}
+
+.border-my-text {
+  border: 2px solid black;
+  color: white;
+  padding: 12px;
+  background-color: #1a4480;
+  text-align: center;
+}
+
+.border-my-class {
+  border: 3px solid black;
+  color: white;
+  padding: 20px;
+  background-color: #1a4480;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.epa-btn-primary {
+  background-color: #005ea2;
+  color: white;
+  padding: 9px 18px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 4px;
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.epa-btn-primary:hover {
+  background-color: #1a4480;
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+}
+
+.epa-btn-primary:disabled {
+  background-color: #a9aeb1;
+  cursor: not-allowed;
+}
+
+.step-badge {
+  font-size: 1.15rem;
+  background-color: #1a4480;
+  color: white;
+  padding: 3px 12px;
+  border-radius: 4px;
+  margin-right: 8px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+/* Print styles for Report PDF generation */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+}
