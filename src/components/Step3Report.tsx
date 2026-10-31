@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SdamRegion, ModelPrediction, Coordinates, AssessmentMetadata, AssessmentPhoto } from '../types/sdam';
-import { FileText, Printer, Camera, Trash2, CheckCircle, Plus } from 'lucide-react';
+import { FileText, Printer, Camera, Trash2, CheckCircle, Plus, AlertCircle } from 'lucide-react';
 
 interface Step3Props {
   region: SdamRegion;
@@ -28,6 +28,7 @@ export const Step3Report: React.FC<Step3Props> = ({
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [photoCaption, setPhotoCaption] = useState('');
   const [photoCategory, setPhotoCategory] = useState<'upstream' | 'downstream' | 'substrate' | 'indicator' | 'other'>('upstream');
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const updateField = (key: keyof AssessmentMetadata, val: string) => {
     onMetadataChange({
@@ -36,9 +37,31 @@ export const Step3Report: React.FC<Step3Props> = ({
     });
   };
 
+  // Security: Enforce allowed MIME types and max size to prevent memory exhaustion DoS & invalid payloads
+  const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+  const MAX_PHOTOS_COUNT = 10;
+
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadError(null);
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (photos.length >= MAX_PHOTOS_COUNT) {
+      setUploadError(`Maximum limit of ${MAX_PHOTOS_COUNT} photos reached.`);
+      e.target.value = '';
+      return;
+    }
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setUploadError('Invalid file type. Only JPEG, PNG, WebP, and GIF images are permitted.');
+      e.target.value = '';
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setUploadError('File size exceeds the 5 MB limit.');
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -50,6 +73,7 @@ export const Step3Report: React.FC<Step3Props> = ({
       };
       onPhotosChange([...photos, newPhoto]);
       setPhotoCaption('');
+      e.target.value = '';
     };
     reader.readAsDataURL(file);
   };
@@ -236,9 +260,16 @@ export const Step3Report: React.FC<Step3Props> = ({
             <label className="epa-btn-primary text-xs py-1.5 px-3 cursor-pointer flex items-center space-x-1">
               <Plus className="w-3.5 h-3.5" />
               <span>Choose photo</span>
-              <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={handlePhotoUpload} className="hidden" />
             </label>
           </div>
+
+          {uploadError && (
+            <div className="mb-4 p-2.5 bg-red-50 border border-red-300 text-red-700 text-xs rounded flex items-center space-x-2">
+              <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+              <span>{uploadError}</span>
+            </div>
+          )}
 
           {photos.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
