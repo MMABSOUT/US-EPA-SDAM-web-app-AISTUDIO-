@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Lock } from 'lucide-react';
 
-export const Header: React.FC = () => {
+// Memoized with React.memo to prevent unnecessary re-renders when parent state updates in App
+// (e.g. typing in inputs, changing coordinates, or updating indicator values).
+export const Header: React.FC = React.memo(() => {
   const [govBannerOpen, setGovBannerOpen] = useState(false);
 
   return (
@@ -93,4 +95,5 @@ export const Header: React.FC = () => {
       </nav>
     </header>
   );
-};
+});
+Header.displayName = 'Header';
