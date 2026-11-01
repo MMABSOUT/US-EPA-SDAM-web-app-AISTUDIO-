@@ -1,7 +1,9 @@
 import React from 'react';
 import { ArrowUp, ExternalLink } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+// Memoized with React.memo to prevent unnecessary re-renders when parent state updates in App
+// (e.g. typing in inputs, changing coordinates, or updating indicator values).
+export const Footer: React.FC = React.memo(() => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -68,4 +70,5 @@ export const Footer: React.FC = () => {
       </div>
     </footer>
   );
-};
+});
+Footer.displayName = 'Footer';

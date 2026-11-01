@@ -1,0 +1,3 @@
+## 2025-05-18 - Header and Footer Component Re-render Elimination
+**Learning:** In top-level page components with heavy interactive form and indicator states (like `App.tsx` managing 20+ indicator fields, coordinates, and report metadata), static header and footer components with complex SVGs and extensive DOM structures re-render on every keystroke unless wrapped in `React.memo`. Because they accept no props, `React.memo` safely eliminates 100% of their re-renders with zero overhead.
+**Action:** When inspecting dashboard or single-page tool root layouts, wrap static headers, navigation bars, and footers in `React.memo` to isolate them from frequent interactive form state changes.
